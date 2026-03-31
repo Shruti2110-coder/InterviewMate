@@ -13,11 +13,16 @@ function Login() {
      const[email, setEmail] = useState("")
      const[password, setPassword] = useState("")
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-     await   handleLogin({email, password})
-     navigate('/')
-    }
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    await handleLogin({ email, password });
+    navigate("/"); // only after success
+  } catch (err) {
+    console.log(err);
+  }
+};
     if(loading){
         return(<main>
             <h1>Loading..........</h1>
@@ -30,7 +35,7 @@ function Login() {
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
             <div className="input-group">
-                <label htlmlFor="email">Email</label>
+                <label htmlFor="email">Email</label>
                 <input
                 onChange={(e) =>{ setEmail(e.target.value)}}
                 type="email"id='email'name='email' placeholder='enter email address'/>
@@ -42,7 +47,7 @@ function Login() {
                 type="password"id='password'name='password' placeholder='enter password'/>
             </div> 
 
-        <button className='button primary-button'>Login</button>
+        <button type="submit" className='button primary-button'>Login</button>
         </form>
 
          <p>Don't have an accoount? <Link to={"/register"}>Register</Link></p>

@@ -1,48 +1,39 @@
 import axios from "axios";
+import api from "../../../services/api";
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_URL,
 
-const api = axios.create({
-  baseURL: "https://interviewmate-690i.onrender.com",
-  withCredentials: true,
-});
+// });
+
+
+
 
 // REGISTER
+
 export async function register({ username, email, password }) {
   const response = await api.post("/api/auth/register", {
-    username,
-    email,
-    password,
+    username, email, password,
   });
-
   return response.data;
 }
 
 // LOGIN
 export async function login({ email, password }) {
-  const response = await api.post("/api/auth/login", {
-    email,
-    password,
-  });
-
-  return response.data;
+  try {
+    const response = await api.post("/api/auth/login", { email, password });
+    return response.data; // ✅ cookie is set automatically by browser
+  } catch (error) {
+    console.log("LOGIN ERROR:", error.response?.data);
+    throw error;
+  }
 }
 
-// LOGOUT
 export async function logout() {
   const response = await api.get("/api/auth/logout");
   return response.data;
 }
 
-// GET ME (IMPORTANT FIX)
-
-
-export const getMe = async () => {
-  const token = localStorage.getItem("token");
-
-  const res = await api.get("/api/auth/get-me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return res.data;
-};
+export async function getMe() {
+  const response = await api.get("/api/auth/get-me");
+  return response.data;
+}

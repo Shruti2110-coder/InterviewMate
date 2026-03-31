@@ -31,7 +31,11 @@ const token = jwt.sign(
     {expiresIn: "1d"}
 
 )
-res.cookie("token", token)
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: isProduction,      
+   sameSite: isProduction ? "none" : "lax",
+});
 res.status(201).json({message: "user registered successfully", 
     user: {
         id: user._id,
@@ -70,7 +74,11 @@ const token = jwt.sign(
 
 )
 
-res.cookie("token", token)
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: isProduction,      
+    sameSite: isProduction ? "none" : "lax", 
+});
 res.status(200).json({
     message: "user loggedIn successfully.", 
     user: {

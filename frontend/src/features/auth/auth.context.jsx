@@ -7,20 +7,20 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await getMe(); 
-        setUser(res.data); 
-      } catch (err) {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const res = await getMe();
+      setUser(res.user);
+    } catch (err) {
+      setUser(null); // no cookie = 401 = user is just not logged in
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchUser();
-  }, []);
+  fetchUser();
+}, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>

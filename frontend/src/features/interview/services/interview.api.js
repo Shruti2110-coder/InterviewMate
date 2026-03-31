@@ -1,9 +1,10 @@
 import axios from "axios";
+import api from "../../../services/api";
 
-const api = axios.create({
-    baseURL: "https://interviewmate-690i.onrender.com",
-    withCredentials: true,
-})
+// const api = axios.create({
+//     baseURL: import.meta.env.VITE_API_URL,
+   
+// })
 
 
 /**

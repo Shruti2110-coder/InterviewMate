@@ -162,9 +162,13 @@ Job: ${jobDescription}
 
     const html = data.html || "<h1>No Resume Generated</h1>";
 
-    const browser = await puppeteer.launch({
-      headless: "new"
-    });
+  const browser = await puppeteer.launch({
+  headless: true,
+  args: [
+    "--no-sandbox",
+    "--disable-setuid-sandbox"
+  ]
+});
 
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0" });
