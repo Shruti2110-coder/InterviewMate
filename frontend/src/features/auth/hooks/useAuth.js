@@ -12,7 +12,7 @@ export const useAuth = () => {
   try {
     const data = await login({ email, password });
 
-    localStorage.setItem("token", data.token); // 👈 ADD HERE
+    localStorage.setItem("token", data.token); 
     setUser(data.user);
 
   } catch (err) {
@@ -42,7 +42,7 @@ export const useAuth = () => {
   try {
     await logout();
 
-    localStorage.removeItem("token"); // 👈 ADD HERE
+    localStorage.removeItem("token"); 
     setUser(null);
 
   } catch (err) {

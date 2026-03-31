@@ -5,13 +5,13 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // important
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await getMe(); // call backend
-        setUser(res.data); // adjust if needed
+        const res = await getMe(); 
+        setUser(res.data); 
       } catch (err) {
         setUser(null);
       } finally {
