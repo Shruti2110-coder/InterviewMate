@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
 app.get("/api/health", (req, res) => {
   const missing = [];
   if (!process.env.JWT_SECRET) missing.push("JWT_SECRET");
-  if (!process.env.MONGODB_URI) missing.push("MONGODB_URI");
+  if (!process.env.MONGO_URI) missing.push("MONGO_URI");
 
   res.status(missing.length ? 500 : 200).json({
     status: missing.length ? "error" : "ok",
