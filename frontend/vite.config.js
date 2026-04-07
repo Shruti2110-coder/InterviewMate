@@ -3,12 +3,16 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    outDir: 'dist',
+    sourcemap: false
+  },
   server: {
     proxy: {
       '/api': {
-        target: 'https://interviewmate-690i.onrender.com',
+        target: process.env.VITE_API_URL,
         changeOrigin: true,
-        secure: true,
+        secure: true
       }
     }
   }

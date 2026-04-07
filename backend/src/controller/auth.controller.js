@@ -1,3 +1,4 @@
+const isProduction = process.env.NODE_ENV === "production";
 const userModel = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -33,8 +34,8 @@ const token = jwt.sign(
 )
 res.cookie("token", token, {
   httpOnly: true,
-  secure: isProduction,      
-   sameSite: isProduction ? "none" : "lax",
+  secure: false,   // 🔥 IMPORTANT for localhost
+  sameSite: "lax", // 🔥 IMPORTANT for localhost
 });
 res.status(201).json({message: "user registered successfully", 
     user: {
@@ -73,11 +74,10 @@ const token = jwt.sign(
     {expiresIn: "1d"}
 
 )
-
 res.cookie("token", token, {
   httpOnly: true,
-  secure: isProduction,      
-    sameSite: isProduction ? "none" : "lax", 
+  secure: false,   // 🔥 IMPORTANT for localhost
+  sameSite: "lax", // 🔥 IMPORTANT for localhost
 });
 res.status(200).json({
     message: "user loggedIn successfully.", 
@@ -105,10 +105,18 @@ res.status(200).json({
 }
  
 async function getMeController(req, res){
-    const user = await userModel.findById(req.user.id)
+    if(!req.user){
+        return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const user = await userModel.findById(req.user.id);
+
+    if(!user){
+        return res.status(404).json({ message: "User not found" });
+    }
 
     res.status(200).json({
-        message:"user details fetched succesfully",
+        message:"user details fetched successfully",
         user: {
             id: user._id,
             username: user.username,

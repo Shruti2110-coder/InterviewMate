@@ -21,7 +21,7 @@ export async function register({ username, email, password }) {
 export async function login({ email, password }) {
   try {
     const response = await api.post("/api/auth/login", { email, password });
-    return response.data; // ✅ cookie is set automatically by browser
+    return response.data;
   } catch (error) {
     console.log("LOGIN ERROR:", error.response?.data);
     throw error;
@@ -34,6 +34,14 @@ export async function logout() {
 }
 
 export async function getMe() {
-  const response = await api.get("/api/auth/get-me");
-  return response.data;
+  try {
+    const response = await api.get("/api/auth/get-me");
+    return response.data;
+  } catch (error) {
+    // 401 is expected when not logged in, don't log it
+    if (error.response?.status !== 401) {
+      console.error("GET_ME ERROR:", error.response?.data);
+    }
+    throw error;
+  }
 }

@@ -6,7 +6,8 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ["http://localhost:5173", "https://your-frontend-domain.com"], // ✅ frontend URL(s)
+  origin: "http://localhost:5173",
+  
   credentials: true
 }));
 
