@@ -16,5 +16,4 @@
     }
   ],
   "outputDirectory": "dist"
-}</content>
-<parameter name="filePath">/Users/shruti/new-project/frontend/vite.config.js
+}
