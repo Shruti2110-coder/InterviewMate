@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { getMe } from "./services/auth.api";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -12,8 +13,9 @@ useEffect(() => {
     try {
       const res = await getMe();
       setUser(res.user);
-    } catch (err) {
-      setUser(null); // no cookie = 401 = user is just not logged in
+    } catch {
+      // 401 is expected when not logged in
+      setUser(null);
     } finally {
       setLoading(false);
     }
