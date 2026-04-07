@@ -34,8 +34,8 @@ const token = jwt.sign(
 )
 res.cookie("token", token, {
   httpOnly: true,
-  secure: false,   // 🔥 IMPORTANT for localhost
-  sameSite: "lax", // 🔥 IMPORTANT for localhost
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
 });
 res.status(201).json({message: "user registered successfully", 
     user: {
@@ -76,8 +76,8 @@ const token = jwt.sign(
 )
 res.cookie("token", token, {
   httpOnly: true,
-  secure: false,   // 🔥 IMPORTANT for localhost
-  sameSite: "lax", // 🔥 IMPORTANT for localhost
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
 });
 res.status(200).json({
     message: "user loggedIn successfully.", 
