@@ -7,13 +7,18 @@ const tokenBlacklistModel = require("../models/blacklist.model")
 async function registerUserController(req, res){
   try {
     const { username, email, password } = req.body;
+    const normalizedEmail = email?.toLowerCase()?.trim();
 
-    if (!username || !email || !password) {
+    if (!username || !normalizedEmail || !password) {
       return res.status(400).json({ message: "all fields are required" });
     }
 
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: "Server auth is not configured. Contact support." });
+    }
+
     const isUserAlreadyExists = await userModel.findOne({
-      $or: [{ username }, { email }]
+      $or: [{ username }, { email: normalizedEmail }]
     });
 
     if (isUserAlreadyExists) {
@@ -24,13 +29,9 @@ async function registerUserController(req, res){
 
     const user = await userModel.create({
       username,
-      email,
+      email: normalizedEmail,
       password: hash
     });
-
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined");
-    }
 
     const token = jwt.sign(
       { id: user._id, username: user.username},
@@ -46,6 +47,7 @@ async function registerUserController(req, res){
 
     return res.status(201).json({
       message: "user registered successfully",
+      token,
       user: {
         id: user._id,
         username: user.username,
@@ -63,15 +65,26 @@ async function registerUserController(req, res){
 async function loginUserController(req, res){
   try {
     const { email, password } = req.body || {};
-    if (!email || !password) {
+    const normalizedEmail = email?.toLowerCase()?.trim();
+
+    if (!normalizedEmail || !password) {
       return res.status(400).json({
         message: "Email and password are required"
       });
     }
 
-    const user = await userModel.findOne({ email });
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: "Server auth is not configured. Contact support." });
+    }
+
+    const user = await userModel.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(400).json({ message: "invalid email or password" });
+    }
+
+    if (typeof user.password !== "string" || !user.password) {
+      console.error("LOGIN ERROR: user password is missing or invalid in database", { userId: user._id });
+      return res.status(500).json({ message: "User account is invalid. Please reset your password." });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -79,10 +92,6 @@ async function loginUserController(req, res){
       return res.status(400).json({
         message: "Invalid email or password"
       });
-    }
-
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined");
     }
 
     const token = jwt.sign(
@@ -99,6 +108,7 @@ async function loginUserController(req, res){
 
     return res.status(200).json({
       message: "user loggedIn successfully.",
+      token,
       user: {
         id: user._id,
         username: user.username,
@@ -120,7 +130,11 @@ if(token) {
     await tokenBlacklistModel.create({token})
 
 }
-res.clearCookie("token")
+res.clearCookie("token", {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
+})
 res.status(200).json({
     message: "user logged out successfully"
 })

@@ -9,9 +9,11 @@ export const useAuth = () => {
     setLoading(true);
     try {
       const data = await login({ email, password });
+      if (data?.token) {
+        localStorage.setItem("auth_token", data.token);
+      }
       setUser(data.user);
-    } catch (err) {
-      console.log(err);
+      return data;
     } finally {
       setLoading(false);
     }
@@ -21,10 +23,11 @@ export const useAuth = () => {
     setLoading(true);
     try {
       const data = await register({ username, email, password });
+      if (data?.token) {
+        localStorage.setItem("auth_token", data.token);
+      }
       setUser(data.user);
-      // ✅ no localStorage — cookie is set automatically by backend
-    } catch (err) {
-      console.log(err);
+      return data;
     } finally {
       setLoading(false);
     }
@@ -35,9 +38,7 @@ export const useAuth = () => {
     try {
       await logout();
       setUser(null);
-      // ✅ no localStorage to clear
-    } catch (err) {
-      console.log(err);
+      localStorage.removeItem("auth_token");
     } finally {
       setLoading(false);
     }

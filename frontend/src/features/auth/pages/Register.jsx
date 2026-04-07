@@ -8,13 +8,19 @@ function Register() {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const { loading, handleRegister } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await handleRegister({ username, email, password })
-    navigate("/")
+    setErrorMessage("")
+    try {
+      await handleRegister({ username, email, password })
+      navigate("/")
+    } catch (err) {
+      setErrorMessage(err?.response?.data?.message || "Registration failed. Please try again.")
+    }
   }
 
   if (loading) {
@@ -62,6 +68,7 @@ function Register() {
 
           <button className="button primary-button">Register</button>
         </form>
+        {errorMessage && <p>{errorMessage}</p>}
 
         <p>
           Already have an account? <Link to="/login">Login</Link>

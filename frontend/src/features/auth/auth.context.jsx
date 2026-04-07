@@ -15,6 +15,7 @@ useEffect(() => {
       setUser(res.user);
     } catch {
       // 401 is expected when not logged in
+      localStorage.removeItem("auth_token");
       setUser(null);
     } finally {
       setLoading(false);
