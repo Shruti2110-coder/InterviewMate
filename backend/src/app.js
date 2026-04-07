@@ -13,6 +13,7 @@ app.use(cors({
     const allowedOrigins = [
       "http://localhost:5173", // Development
       "http://localhost:5174", // Alternative dev port
+      "https://interview-mate-yl8d.vercel.app", // Production
       /\.vercel\.app$/, // Vercel production domains
       /\.now\.sh$/ // Vercel legacy domains
     ];
