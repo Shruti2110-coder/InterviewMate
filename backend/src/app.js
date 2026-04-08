@@ -8,6 +8,7 @@ app.use(cookieParser());
 const defaultAllowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://interview-mate-yl8d.vercel.app",
   "https://interview-mate-4ulh.vercel.app",
   "https://interview-mate-4ulh-n21vydtxb-shruti-jains-projects-65689fa9.vercel.app",
 ];
