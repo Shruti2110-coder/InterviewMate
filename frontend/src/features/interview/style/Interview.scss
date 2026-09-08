@@ -169,3 +169,215 @@ $severity-low: #3fb950;
   width: 240px;
   padding: 1.75rem 1.25rem;
 }
+
+// ── Question card chevron + tags ────────────────────────────────
+.q-card {
+  &__header {
+    align-items: flex-start;
+    cursor: pointer;
+  }
+
+  &__question {
+    flex: 1;
+    margin: 0;
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    color: $text-muted;
+    transition: transform 0.2s ease;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__body {
+    padding-top: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  &__tag {
+    display: inline-block;
+    margin-bottom: 0.35rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+
+    &--intention {
+      color: #8ab4f8;
+      background: rgba(74, 144, 226, 0.15);
+    }
+
+    &--answer {
+      color: $severity-low;
+      background: rgba(63, 185, 80, 0.15);
+    }
+  }
+}
+
+// ── Roadmap ────────────────────────────────
+.roadmap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.roadmap-day {
+  background-color: $bg-panel;
+  border: 1px solid $border-color;
+  border-radius: 0.6rem;
+  padding: 1rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__badge {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: $accent;
+    background: rgba(255, 45, 120, 0.12);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2rem;
+  }
+
+  &__focus {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  &__tasks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      font-size: 0.835rem;
+      line-height: 1.6;
+    }
+  }
+
+  &__bullet {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $accent;
+  }
+}
+
+// ── Sidebar: match score ────────────────────────────────
+.sidebar-divider {
+  height: 1px;
+  background-color: $border-color;
+  margin: 1.5rem 0;
+}
+
+.match-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  &__label {
+    margin: 0 0 0.9rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $text-muted;
+  }
+
+  &__ring {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 6px solid $border-color;
+    margin-bottom: 0.9rem;
+
+    &.score--high { border-color: $severity-low; }
+    &.score--mid  { border-color: $severity-medium; }
+    &.score--low  { border-color: $severity-high; }
+  }
+
+  &__value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__pct {
+    font-size: 0.9rem;
+    color: $text-muted;
+    margin-left: 2px;
+  }
+
+  &__sub {
+    margin: 0;
+    font-size: 0.8rem;
+    color: $text-muted;
+    line-height: 1.5;
+  }
+}
+
+// ── Sidebar: skill gaps ────────────────────────────────
+.skill-gaps {
+  &__label {
+    margin: 0 0 0.9rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $text-muted;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.skill-tag {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  padding: 0.4rem 0.65rem;
+  border-radius: 0.4rem;
+  border-left: 3px solid $border-color;
+  background-color: $bg-panel;
+
+  &--high {
+    border-left-color: $severity-high;
+    color: color.adjust($severity-high, $lightness: 12%);
+  }
+
+  &--medium {
+    border-left-color: $severity-medium;
+    color: color.adjust($severity-medium, $lightness: 10%);
+  }
+
+  &--low {
+    border-left-color: $severity-low;
+    color: color.adjust($severity-low, $lightness: 10%);
+  }
+}

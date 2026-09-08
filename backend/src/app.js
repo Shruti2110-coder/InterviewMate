@@ -49,11 +49,29 @@ const interviewRouter = require("./routes/interview.routes")
 app.use('/api/auth', authRouter);
 app.use('/api/interview', interviewRouter);
 
+const multer = require('multer');
+const { MAX_RESUME_BYTES } = require('./middlewares/file.middleware');
+
 app.use((err, req, res, next) => {
   console.error('SERVER ERROR:', err);
+
   if (err.message === 'Not allowed by CORS') {
     return res.status(403).json({ message: err.message });
   }
+
+  // Upload problems are the user's to fix, not a 500.
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        message: `Resume is too large. Maximum size is ${MAX_RESUME_BYTES / (1024 * 1024)}MB.`
+      });
+    }
+    if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+      return res.status(400).json({ message: 'Only PDF resumes are supported.' });
+    }
+    return res.status(400).json({ message: `Upload failed: ${err.message}` });
+  }
+
   res.status(err.status || 500).json({ message: err.message || 'Internal server error' });
 });
 

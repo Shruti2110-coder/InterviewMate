@@ -1,20 +1,18 @@
 import api from "../../../services/api";
 
-// const api = axios.create({
-//     baseURL: import.meta.env.VITE_API_URL,
-   
-// })
-
-
 /**
  * @description Service to generate interview report based on user self description, resume and job description.
  */
 export const generateInterviewReport = async ({ jobDescription, selfDescription, resumeFile }) => {
 
     const formData = new FormData()
-    formData.append("jobDescription", jobDescription)
-    formData.append("selfDescription", selfDescription)
-    formData.append("resume", resumeFile)
+    formData.append("jobDescription", jobDescription ?? "")
+    formData.append("selfDescription", selfDescription ?? "")
+    // Appending an absent file sends the string "undefined" as a text field,
+    // which multer ignores - leaving the server with no file and no warning.
+    if (resumeFile) {
+        formData.append("resume", resumeFile)
+    }
 
     const response = await api.post("/api/interview/", formData, {
         headers: {

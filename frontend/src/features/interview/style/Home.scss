@@ -296,6 +296,31 @@ $font-stack:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robot
     }
 }
 
+// ── Error Banner ──────────────────────────────────────────────────────────────
+.error-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0 1.5rem 1rem;
+    padding: 0.75rem 1rem;
+    background-color: rgba(220, 53, 79, 0.1);
+    border: 1px solid rgba(220, 53, 79, 0.4);
+    border-radius: 0.5rem;
+
+    &__icon {
+        flex-shrink: 0;
+        color: $accent;
+        margin-top: 1px;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #ff9aab;
+        line-height: 1.5;
+    }
+}
+
 // ── Generate Button ───────────────────────────────────────────────────────────
 .generate-btn {
     display: flex;
@@ -315,6 +340,11 @@ $font-stack:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robot
     cursor: pointer;
     transition: opacity 0.2s, transform 0.1s;
     font-family: $font-stack;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 
     &:hover {
         opacity: 0.9;

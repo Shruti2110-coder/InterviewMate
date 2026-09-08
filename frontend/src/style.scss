@@ -18,3 +18,22 @@ body,
 .highlight{
     color: #7b142c;
 }
+
+// Shared full-page state screen (loading / not found / error).
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        max-width: 40rem;
+        line-height: 1.4;
+    }
+}

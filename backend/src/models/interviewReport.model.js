@@ -43,6 +43,9 @@ const interviewReportSchema = new mongoose.Schema({
   },
   resume: String,
   selfDescription: String,
+  // The AI returns a title and the UI renders it; without this field mongoose
+  // strips it on save and every plan shows as "Untitled Position".
+  title: String,
   matchScore: {
     type: Number,
     min: 0,
