@@ -6,9 +6,26 @@ let lastError = null;
 
 const STATES = ["disconnected", "connected", "connecting", "disconnecting"];
 
+/**
+ * The cluster host we are dialing, with credentials stripped. Safe to expose:
+ * it answers "is production even pointed at the right cluster?" without
+ * leaking the username or password.
+ */
+function targetHost() {
+    const uri = process.env.MONGO_URI;
+    if (!uri) return null;
+    try {
+        const afterAt = uri.split("@")[1] || uri.replace(/^mongodb(\+srv)?:\/\//, "");
+        return afterAt.split(/[/?]/)[0] || null;
+    } catch {
+        return "unparseable";
+    }
+}
+
 function dbStatus() {
     return {
         state: STATES[mongoose.connection.readyState] || "unknown",
+        host: targetHost(),
         error: lastError
     };
 }
